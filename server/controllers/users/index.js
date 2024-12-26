@@ -5,12 +5,12 @@ import jwt from "jsonwebtoken";
 
 import userModel from "../../models/Users/Users.js";
 
-
 const router = express.Router()
 
 router.get("/getallusers", async(req, res) => {
     try {
         let allUsers = await userModel.find({})
+        console.log("Get all users");
         res.status(200).json(allUsers)
     } catch (error) {
         console.log(error);
@@ -18,11 +18,12 @@ router.get("/getallusers", async(req, res) => {
     }
 })
 
+
 router.get("/getone/:id", async(req, res) => {
     try {
         let userId = req.params.id
         let getOneData = await userModel.find({_id: userId})
-        res.status(200).json(getOneData)
+        res.status(200).json({user: getOneData})
     } catch (error) {
         console.log(error);
         res.status(500).json({msg: error})
@@ -35,8 +36,8 @@ router.post("/register", async(req, res) => {
         let hashPassword = await bcrypt.hash(userData.password, 10)
         userData.password = hashPassword
         await userModel.create(userData)
-        console.log(userData);
-        res.status(200).json({msg: "User added successfully"})
+        res.status(201).json({msg: "user added successfully"})
+    
     } catch (error) {
         console.log(error);
         res.status(500).json({msg: error})

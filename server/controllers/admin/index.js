@@ -6,7 +6,7 @@ import adminModel from "../../models/Admin/Admin.js";
 
 const router = express.Router()
 
-router.get("getalladmins", async(req, res) => {
+router.get("/getalladmins", async(req, res) => {
     try {
         let allAdmins = await adminModel.find({})
         res.status(200).json(allAdmins)
@@ -16,7 +16,7 @@ router.get("getalladmins", async(req, res) => {
     }
 })
 
-router.get("/getoneadmin/:id", async(req, res) => {
+router.get("/getone/:id", async(req, res) => {
     try {
         let adminId = req.params.id
         let getOneData = await adminModel.find({_id: adminId})
@@ -34,7 +34,7 @@ router.post("/register", async(req, res) => {
         adminData.password = hashPassword
         await adminModel.create(adminData)
         console.log(adminData);
-        res.status(200).json({msg: "Admin added successfully"})
+        res.status(201).json({msg: "Admin added successfully"})
     } catch (error) {
         console.log(error);
         res.status(500).json({msg: error})
@@ -67,7 +67,7 @@ router.delete("/deleteone/:id", async(req, res) => {
 router.delete("/deleteall", async(req, res) => {
     try {
         let adminId = req.params.deleteall
-        await userModel.deleteMany()
+        await adminModel.deleteMany()
         res.status(200).json({msg: "Deleted all admins"})
     } catch (error) {
         console.log(error);

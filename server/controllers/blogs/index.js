@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
 import blogModel from "../../models/Blogs/Blogs.js"
+import userModel from "../../models/Users/Users.js"
 
 const router = express.Router()
 
@@ -10,7 +11,7 @@ router.get("/getallblogs", async (req, res) => {
     try {
         console.log("get all blogs");
 
-        let allBlogs = await blogsModel.find({})
+        let allBlogs = await blogModel.find({})
         res.status(200).json(allBlogs)
 
     } catch (error) {
@@ -36,12 +37,9 @@ router.get("/getone/:id", async (req, res) => {
 
 router.post("/register", async (req, res) => {
     try {
-
         let blogData = req.body
-        let hashpassword = await bcrypt.hash(blogData.password, 10)
-        blogData.password = hashpassword
         await blogModel.create(blogData)
-        res.status(201).json({ msg: "user added successfully" })
+        res.status(201).json({ msg: "blog added successfully" })
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: error })
